@@ -1,29 +1,24 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 
-// Dummy data for players
-const dummyPlayers = [
-  { name: "Scump", nationality: "USA", age: 29, wins: 31, rings: 1, teams: ["OpTic", "Chicago Huntsmen"], teammates: ["FormaL", "Dashy", "Envoy"] },
-  { name: "Crimsix", nationality: "USA", age: 31, wins: 37, rings: 3, teams: ["OpTic", "Dallas Empire", "New York Subliners"], teammates: ["Clayster", "Shotzzy", "iLLeY"] },
-  { name: "Simp", nationality: "USA", age: 23, wins: 15, rings: 2, teams: ["Atlanta FaZe"], teammates: ["aBeZy", "Cellium", "Arcitys"] },
-  { name: "Shotzzy", nationality: "USA", age: 22, wins: 8, rings: 1, teams: ["Dallas Empire", "OpTic Texas"], teammates: ["Dashy", "iLLeY", "Huke"] },
-  { name: "Clayster", nationality: "USA", age: 32, wins: 20, rings: 3, teams: ["Dallas Empire", "New York Subliners", "LA Guerrillas"], teammates: ["Crimsix", "Hydra", "Asim"] },
-  { name: "Cellium", nationality: "USA", age: 24, wins: 14, rings: 2, teams: ["Atlanta FaZe"], teammates: ["Simp", "aBeZy", "Arcitys"] },
-  { name: "Hydra", nationality: "France", age: 21, wins: 3, rings: 0, teams: ["New York Subliners"], teammates: ["Clayster", "Crimsix", "Kismet"] },
-  { name: "Dashy", nationality: "Canada", age: 25, wins: 5, rings: 0, teams: ["OpTic"], teammates: ["Scump", "Shotzzy", "iLLeY"] },
-  { name: "aBeZy", nationality: "USA", age: 23, wins: 14, rings: 2, teams: ["Atlanta FaZe"], teammates: ["Simp", "Cellium", "Arcitys"] },
-  { name: "Arcitys", nationality: "USA", age: 25, wins: 12, rings: 2, teams: ["Chicago Huntsmen", "Atlanta FaZe"], teammates: ["Scump", "Simp", "aBeZy"] },
-  { name: "FormaL", nationality: "USA", age: 30, wins: 23, rings: 1, teams: ["OpTic", "Chicago Huntsmen"], teammates: ["Scump", "Dashy", "Envoy"] },
-  { name: "Envoy", nationality: "USA", age: 24, wins: 6, rings: 0, teams: ["Chicago Huntsmen", "OpTic", "LA Thieves"], teammates: ["Scump", "FormaL", "Kenny"] },
-  { name: "Kenny", nationality: "USA", age: 23, wins: 7, rings: 1, teams: ["LA Thieves"], teammates: ["Envoy", "Octane", "Drazah"] },
-  { name: "Octane", nationality: "USA", age: 27, wins: 9, rings: 1, teams: ["Seattle Surge", "LA Thieves"], teammates: ["Kenny", "Drazah", "Mack"] },
-  { name: "SlasheR", nationality: "USA", age: 28, wins: 11, rings: 1, teams: ["LA Thieves", "LA Guerrillas"], teammates: ["Kenny", "Huke", "Asim"] },
+// Dummy data for celebrities based on celebwordle.csv
+const dummyCelebs = [
+  { name: "Beyoncé", profession: "Singer", age: 42, country: "USA", oscars: 0, grammys: 32 },
+  { name: "Leonardo DiCaprio", profession: "Actor", age: 49, country: "USA", oscars: 1, grammys: 0 },
+  { name: "Taylor Swift", profession: "Singer", age: 34, country: "USA", oscars: 0, grammys: 14 },
+  { name: "Tom Hanks", profession: "Actor", age: 67, country: "USA", oscars: 2, grammys: 0 },
+  { name: "Jennifer Lopez", profession: "Singer/Actor", age: 54, country: "USA", oscars: 0, grammys: 0 },
+  { name: "Brad Pitt", profession: "Actor", age: 60, country: "USA", oscars: 2, grammys: 0 },
+  { name: "Meryl Streep", profession: "Actor", age: 74, country: "USA", oscars: 3, grammys: 0 },
+  { name: "Ed Sheeran", profession: "Singer", age: 33, country: "UK", oscars: 0, grammys: 4 },
+  { name: "Rihanna", profession: "Singer", age: 36, country: "Barbados", oscars: 0, grammys: 9 },
+  { name: "Dwayne Johnson", profession: "Actor", age: 52, country: "USA", oscars: 0, grammys: 0 },
 ];
 
 // Game state interface
 interface GameState {
-  mysteryPlayer: typeof dummyPlayers[0] | null;
-  guesses: typeof dummyPlayers[0][];
+  mysteryCeleb: typeof dummyCelebs[0] | null;
+  guesses: typeof dummyCelebs[0][];
   gameOver: boolean;
   won: boolean;
   gaveUp: boolean;
@@ -33,10 +28,10 @@ interface GameState {
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredPlayers, setFilteredPlayers] = useState<typeof dummyPlayers>([]);
+  const [filteredCelebs, setFilteredCelebs] = useState<typeof dummyCelebs>([]);
   const [showInstructions, setShowInstructions] = useState(true);
   const [gameState, setGameState] = useState<GameState>({
-    mysteryPlayer: null,
+    mysteryCeleb: null,
     guesses: [],
     gameOver: false,
     won: false,
@@ -47,20 +42,20 @@ export default function Home() {
 
   // Initialize game on component mount
   useEffect(() => {
-    // Select a random player as the mystery player
-    const randomIndex = Math.floor(Math.random() * dummyPlayers.length);
+    // Select a random celebrity as the mystery celebrity
+    const randomIndex = Math.floor(Math.random() * dummyCelebs.length);
     setGameState(prev => ({
       ...prev,
-      mysteryPlayer: dummyPlayers[randomIndex],
+      mysteryCeleb: dummyCelebs[randomIndex],
       loading: false
     }));
     
     // Check if user has played before
-    const hasPlayed = localStorage.getItem('cdlWordleHasPlayed');
+    const hasPlayed = localStorage.getItem('celebWordleHasPlayed');
     if (hasPlayed) {
       setShowInstructions(false);
     } else {
-      localStorage.setItem('cdlWordleHasPlayed', 'true');
+      localStorage.setItem('celebWordleHasPlayed', 'true');
     }
   }, []);
 
@@ -70,30 +65,30 @@ export default function Home() {
     setSearchTerm(term);
     
     if (term.length > 0) {
-      const filtered = dummyPlayers.filter(player => 
-        player.name.toLowerCase().includes(term.toLowerCase()) &&
-        !gameState.guesses.some(guess => guess.name === player.name)
+      const filtered = dummyCelebs.filter(celeb => 
+        celeb.name.toLowerCase().includes(term.toLowerCase()) &&
+        !gameState.guesses.some(guess => guess.name === celeb.name)
       );
-      setFilteredPlayers(filtered);
+      setFilteredCelebs(filtered);
     } else {
-      setFilteredPlayers([]);
+      setFilteredCelebs([]);
     }
   };
 
-  // Handle player selection
-  const selectPlayer = (player: typeof dummyPlayers[0]) => {
+  // Handle celebrity selection
+  const selectCeleb = (celeb: typeof dummyCelebs[0]) => {
     setSearchTerm('');
-    setFilteredPlayers([]);
+    setFilteredCelebs([]);
     
-    // Check if player is already guessed
-    if (gameState.guesses.some(guess => guess.name === player.name)) {
+    // Check if celebrity is already guessed
+    if (gameState.guesses.some(guess => guess.name === celeb.name)) {
       return;
     }
     
-    // Check if player is the mystery player
-    const isCorrect = player.name === gameState.mysteryPlayer?.name;
+    // Check if celebrity is the mystery celebrity
+    const isCorrect = celeb.name === gameState.mysteryCeleb?.name;
     
-    const newGuesses = [...gameState.guesses, player];
+    const newGuesses = [...gameState.guesses, celeb];
     
     setGameState(prev => ({
       ...prev,
@@ -114,9 +109,9 @@ export default function Home() {
 
   // Handle new game
   const handleNewGame = () => {
-    const randomIndex = Math.floor(Math.random() * dummyPlayers.length);
+    const randomIndex = Math.floor(Math.random() * dummyCelebs.length);
     setGameState({
-      mysteryPlayer: dummyPlayers[randomIndex],
+      mysteryCeleb: dummyCelebs[randomIndex],
       guesses: [],
       gameOver: false,
       won: false,
@@ -126,29 +121,21 @@ export default function Home() {
     });
   };
 
-  // Check if a property matches the mystery player
-  const isMatch = (guess: typeof dummyPlayers[0], property: keyof typeof dummyPlayers[0]) => {
-    if (!gameState.mysteryPlayer) return false;
-    
-    if (property === 'teams' || property === 'teammates') {
-      // For arrays, check if there's any overlap
-      return (guess[property] as any[]).some(item => 
-        (gameState.mysteryPlayer![property] as any[]).includes(item)
-      );
-    }
-    
-    return guess[property] === gameState.mysteryPlayer[property];
+  // Check if a property matches the mystery celebrity
+  const isMatch = (guess: typeof dummyCelebs[0], property: keyof typeof dummyCelebs[0]) => {
+    if (!gameState.mysteryCeleb) return false;
+    return guess[property] === gameState.mysteryCeleb[property];
   };
 
   // Get directional hint for numeric values
-  const getDirectionalHint = (guess: typeof dummyPlayers[0], property: 'age' | 'wins' | 'rings') => {
-    if (!gameState.mysteryPlayer) return null;
+  const getDirectionalHint = (guess: typeof dummyCelebs[0], property: 'age' | 'oscars' | 'grammys') => {
+    if (!gameState.mysteryCeleb) return null;
     
-    if (guess[property] === gameState.mysteryPlayer[property]) {
+    if (guess[property] === gameState.mysteryCeleb[property]) {
       return null;
     }
     
-    if (guess[property] < gameState.mysteryPlayer[property]) {
+    if (guess[property] < gameState.mysteryCeleb[property]) {
       return <span className={`directionalHint higher`}>↑</span>;
     } else {
       return <span className={`directionalHint lower`}>↓</span>;
@@ -157,25 +144,24 @@ export default function Home() {
 
   // Share results
   const shareResults = () => {
-    if (!gameState.mysteryPlayer) return;
+    if (!gameState.mysteryCeleb) return;
     
-    let shareText = `CDL Wordle - ${gameState.mysteryPlayer.name}\n`;
+    let shareText = `Celeb Wordle - ${gameState.mysteryCeleb.name}\n`;
     shareText += gameState.won ? `I got it in ${gameState.guesses.length}/${gameState.maxGuesses} guesses!` : 'I gave up!';
     shareText += '\n\n';
     
     // Add emoji grid representation of guesses
     gameState.guesses.forEach(guess => {
-      const nationalityMatch = isMatch(guess, 'nationality') ? '🟩' : '⬜';
+      const professionMatch = isMatch(guess, 'profession') ? '🟩' : '⬜';
       const ageMatch = isMatch(guess, 'age') ? '🟩' : '⬜';
-      const winsMatch = isMatch(guess, 'wins') ? '🟩' : '⬜';
-      const ringsMatch = isMatch(guess, 'rings') ? '🟩' : '⬜';
-      const teamsMatch = isMatch(guess, 'teams') ? '🟩' : '⬜';
-      const teammatesMatch = isMatch(guess, 'teammates') ? '🟩' : '⬜';
+      const countryMatch = isMatch(guess, 'country') ? '🟩' : '⬜';
+      const oscarsMatch = isMatch(guess, 'oscars') ? '🟩' : '⬜';
+      const grammysMatch = isMatch(guess, 'grammys') ? '🟩' : '⬜';
       
-      shareText += `${nationalityMatch}${ageMatch}${winsMatch}${ringsMatch}${teamsMatch}${teammatesMatch}\n`;
+      shareText += `${professionMatch}${ageMatch}${countryMatch}${oscarsMatch}${grammysMatch}\n`;
     });
     
-    shareText += '\nPlay at: https://cdlwordle.me';
+    shareText += '\nPlay at: https://celebwordle.me';
     
     navigator.clipboard.writeText(shareText)
       .then(() => alert('Results copied to clipboard!'))
@@ -189,19 +175,19 @@ export default function Home() {
   return (
     <div className="container">
       <Head>
-        <title>CDL Wordle</title>
-        <meta name="description" content="Guess the CDL player" />
+        <title>Celeb Wordle</title>
+        <meta name="description" content="Guess the Celebrity" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className="main">
-        <h1 className="title">CDL Wordle</h1>
+        <h1 className="title">Celeb Wordle</h1>
         
         {showInstructions && (
           <div className="instructions">
-            <p>Guess the mystery CDL player in {gameState.maxGuesses} tries or less!</p>
-            <p>Green cells indicate a match with the mystery player.</p>
-            <p>For numeric values, arrows indicate if the mystery player's value is higher (↑) or lower (↓).</p>
+            <p>Guess the mystery celebrity in {gameState.maxGuesses} tries or less!</p>
+            <p>Green cells indicate a match with the mystery celebrity.</p>
+            <p>For numeric values, arrows indicate if the mystery celebrity's value is higher (↑) or lower (↓).</p>
             <button 
               className="newGameButton" 
               onClick={() => setShowInstructions(false)}
@@ -219,18 +205,18 @@ export default function Home() {
                   type="text"
                   value={searchTerm}
                   onChange={handleSearchChange}
-                  placeholder="Start typing to guess a player..."
+                  placeholder="Start typing to guess a celebrity..."
                   className="searchInput"
                 />
-                {filteredPlayers.length > 0 && (
+                {filteredCelebs.length > 0 && (
                   <div className="dropdown">
-                    {filteredPlayers.map((player) => (
+                    {filteredCelebs.map((celeb) => (
                       <div 
-                        key={player.name} 
+                        key={celeb.name} 
                         className="dropdownItem"
-                        onClick={() => selectPlayer(player)}
+                        onClick={() => selectCeleb(celeb)}
                       >
-                        {player.name}
+                        {celeb.name}
                       </div>
                     ))}
                   </div>
@@ -240,11 +226,11 @@ export default function Home() {
                 <button 
                   className="guessButton"
                   onClick={() => {
-                    if (filteredPlayers.length > 0) {
-                      selectPlayer(filteredPlayers[0]);
+                    if (filteredCelebs.length > 0) {
+                      selectCeleb(filteredCelebs[0]);
                     }
                   }}
-                  disabled={filteredPlayers.length === 0}
+                  disabled={filteredCelebs.length === 0}
                 >
                   Guess
                 </button>
@@ -268,38 +254,34 @@ export default function Home() {
                   <thead>
                     <tr>
                       <th>Name</th>
-                      <th>Nationality</th>
+                      <th>Profession</th>
                       <th>Age</th>
-                      <th>Wins</th>
-                      <th>Rings</th>
-                      <th>Teams</th>
-                      <th>Teammates</th>
+                      <th>Country</th>
+                      <th>Oscars</th>
+                      <th>Grammys</th>
                     </tr>
                   </thead>
                   <tbody>
                     {gameState.guesses.map((guess, index) => (
                       <tr key={index}>
                         <td>{guess.name}</td>
-                        <td className={isMatch(guess, 'nationality') ? "match" : ''}>
-                          {guess.nationality}
+                        <td className={isMatch(guess, 'profession') ? "match" : ''}>
+                          {guess.profession}
                         </td>
                         <td className={isMatch(guess, 'age') ? "match" : ''}>
                           {guess.age}
                           {!isMatch(guess, 'age') && getDirectionalHint(guess, 'age')}
                         </td>
-                        <td className={isMatch(guess, 'wins') ? "match" : ''}>
-                          {guess.wins}
-                          {!isMatch(guess, 'wins') && getDirectionalHint(guess, 'wins')}
+                        <td className={isMatch(guess, 'country') ? "match" : ''}>
+                          {guess.country}
                         </td>
-                        <td className={isMatch(guess, 'rings') ? "match" : ''}>
-                          {guess.rings}
-                          {!isMatch(guess, 'rings') && getDirectionalHint(guess, 'rings')}
+                        <td className={isMatch(guess, 'oscars') ? "match" : ''}>
+                          {guess.oscars}
+                          {!isMatch(guess, 'oscars') && getDirectionalHint(guess, 'oscars')}
                         </td>
-                        <td className={isMatch(guess, 'teams') ? "match" : ''}>
-                          {guess.teams.join(', ')}
-                        </td>
-                        <td className={isMatch(guess, 'teammates') ? "match" : ''}>
-                          {guess.teammates.join(', ')}
+                        <td className={isMatch(guess, 'grammys') ? "match" : ''}>
+                          {guess.grammys}
+                          {!isMatch(guess, 'grammys') && getDirectionalHint(guess, 'grammys')}
                         </td>
                       </tr>
                     ))}
@@ -310,9 +292,9 @@ export default function Home() {
           </>
         ) : (
           <div className="gameOverContainer">
-            <h2>The mystery player was:</h2>
-            <h1 className="mysteryPlayerReveal">
-              {gameState.mysteryPlayer?.name}
+            <h2>The mystery celebrity was:</h2>
+            <h1 className="mysteryCelebReveal">
+              {gameState.mysteryCeleb?.name}
             </h1>
             
             {gameState.won ? (
@@ -339,8 +321,7 @@ export default function Home() {
       </main>
 
       <footer className="footer">
-        <p>Created by Diz</p>
-        <p>This site is not affiliated with the Call of Duty League or Activision.</p>
+        <p>This is a celebrity guessing game inspired by Wordle.</p>
       </footer>
     </div>
   );
