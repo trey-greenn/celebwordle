@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import SEO from '@/components/SEO';
 
 // Dummy data for celebrities based on celebwordle.csv
 const dummyCelebs = [
@@ -174,11 +175,7 @@ export default function Home() {
 
   return (
     <div className="container">
-      <Head>
-        <title>Celeb Wordle</title>
-        <meta name="description" content="Guess the Celebrity" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <SEO/>
 
       <main className="main">
         <h1 className="title">Celeb Wordle</h1>

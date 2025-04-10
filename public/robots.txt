@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: www.celebritybwordle.com
+
+# Sitemaps
+Sitemap: www.celebritybwordle.com/sitemap.xml
