@@ -1,0 +1,100 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+I have this simiple new homepage mock up below, MockUp 1.0.0. We are going to use this as the new general design of the homepage. We are going to take it component by component and will not build out any advanced features yet, only implement the new design framework. Do not build out any advanced features, unless specifcally told to. Also, only build out the component that we directly mention.
+ 
+The goal of this sprint is to redesign our homepage and make it user-centric. I am struggling to come up with the perfect home page for the website, but I know I want the homepage to be fun, education, and asthetically pleasing to look at.
+
+
+
+
+MockUp 1.0.0
++------------------------------------------------------+
+|  CELEBRITY WORDLE                      Login | Sign Up |
++------------------------------------------------------+
+|                                                      |
+|  [Animated logo with flipping letter tiles]          |
+|                                                      |
+|  GUESS TODAY'S CELEBRITY IN 6 TRIES                  |
++------------------------------------------------------+
+|                                                      |
+|  SELECT DIFFICULTY:                                  |
+|                                                      |
+|  [Rising Star] [A-Lister] [Icon]                     |
+|   (easier)     (medium)   (hard)                     |
+|                                                      |
++------------------------------------------------------+
+|                                                      |
+|  CHOOSE CATEGORY:                                    |
+|                                                      |
+|  [All] [Actors] [Musicians] [Athletes] [Influencers] |
+|                                                      |
++------------------------------------------------------+
+|                                                      |
+|  EXPLORE BY ERA:                                     |
+|                                                      |
+|  [2000s+] [90s] [80s] [70s] [Golden Age]             |
+|                                                      |
++------------------------------------------------------+
+|                                                      |
+|  TODAY'S CHALLENGE                                   |
+|  +---------+                                         |
+|  | Hint:   |  A-List difficulty                      |
+|  | Known   |  Category: Actors                       |
+|  | for     |                                         |
+|  | action  |  Current streak: 5 days                 |
+|  | films   |                                         |
+|  +---------+                                         |
+|                                                      |
+|  +---+---+---+---+---+                               |
+|  |   |   |   |   |   |                               |
+|  +---+---+---+---+---+                               |
+|                                                      |
+|  [Keyboard for input]                                |
+|                                                      |
++------------------------------------------------------+
+|                                                      |
+|  TRENDING CHALLENGES                                 |
+|                                                      |
+|  ⭐ 90s Sitcom Stars                                 |
+|  ⭐ Oscar Winners                                    |
+|  ⭐ Chart-Topping Musicians                          |
+|                                                      |
++------------------------------------------------------+
+|                                                      |
+|  LEADERBOARD                  YOUR STATS             |
+|                                                      |
+|  1. WordleWizard - 15        Games: 27               |
+|  2. CelebFan22 - 12          Won: 21                 |
+|  3. StarGazer - 10           Current Streak: 5       |
+|                              Best Streak: 8          |
+|                                                      |
++------------------------------------------------------+
+|                                                      |
+|  FEATURED CATEGORIES                                 |
+|                                                      |
+|  [90s TV Stars]  [Action Heroes]  [Pop Icons]        |
+|  [Sports Legends]  [Hollywood Golden Age]            |
+|                                                      |
++------------------------------------------------------+
+|                                                      |
+|  HOW TO PLAY                                         |
+|                                                      |
+|  • Guess the CELEBRITY in 6 tries.                   |
+|  • Each guess must be a valid celebrity name.        |
+|  • After each guess, the color of the tiles will     |
+|    change to show how close your guess was.          |
+|  • Green: Correct letter in correct position         |
+|  • Yellow: Correct letter in wrong position          |
+|  • Gray: Letter not in the name                      |
+|                                                      |
+|  [Play Tutorial]                                     |
+|                                                      |
++------------------------------------------------------+
+|                                                      |
+|  About | Contact | Privacy | Terms | FAQ             |
+|  © 2023 Celebrity Wordle - All Rights Reserved       |
+|                                                      |
++------------------------------------------------------+

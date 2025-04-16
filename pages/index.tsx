@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import SEO from '@/components/SEO';
+import  {DifficultySelector}  from '@/components/DifficultySelector';
+import { CategorySelector } from '@/components/CategorySelector';
+import { EraExplorer } from '@/components/EraExplorer';
+import { Leaderboard } from '@/components/Leaderboard';
+import { FeaturedCategories } from '@/components/FeaturedCategories';
+
 
 // Dummy data for celebrities based on celebwordle.csv
 const dummyCelebs = [
@@ -121,6 +127,9 @@ export default function Home() {
       maxGuesses: 8
     });
   };
+  const [selectedDifficulty, setSelectedDifficulty] = useState('a-lister');
+const [selectedCategory, setSelectedCategory] = useState('all');
+const [selectedEra, setSelectedEra] = useState('');
 
   // Check if a property matches the mystery celebrity
   const isMatch = (guess: typeof dummyCelebs[0], property: keyof typeof dummyCelebs[0]) => {
@@ -173,6 +182,33 @@ export default function Home() {
     return <div className="container">Loading...</div>;
   }
 
+// New state for the added components
+
+
+// Mock data for leaderboard
+const mockTopPlayers = [
+  { username: 'WordleWizard', score: 15 },
+  { username: 'CelebFan22', score: 12 },
+  { username: 'StarGazer', score: 10 },
+];
+
+const mockUserStats = {
+  gamesPlayed: 27,
+  gamesWon: 21,
+  currentStreak: 5,
+  bestStreak: 8,
+};
+
+// Mock data for featured categories
+const featuredCategories = [
+  { id: '90s-tv', name: '90s TV Stars' },
+  { id: 'action-heroes', name: 'Action Heroes' },
+  { id: 'pop-icons', name: 'Pop Icons' },
+  { id: 'sports-legends', name: 'Sports Legends' },
+  { id: 'golden-age', name: 'Hollywood Golden Age' },
+];
+
+
   return (
     <div className="container">
       <SEO/>
@@ -193,6 +229,9 @@ export default function Home() {
             </button>
           </div>
         )}
+        <DifficultySelector onSelectDifficulty={setSelectedDifficulty} />
+        <CategorySelector onSelectCategory={setSelectedCategory} />
+        <EraExplorer onSelectEra={setSelectedEra} />
         
         {!gameState.gameOver ? (
           <>
@@ -315,6 +354,17 @@ export default function Home() {
             </button>
           </div>
         )}
+        <div className='mt-32'>
+        <Leaderboard 
+          topPlayers={mockTopPlayers}
+          userStats={mockUserStats}
+        />
+        
+        <FeaturedCategories 
+          categories={featuredCategories}
+          onSelectCategory={(categoryId) => console.log('Selected category:', categoryId)}
+        />
+        </div>
       </main>
 
       <footer className="footer">
