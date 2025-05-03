@@ -211,7 +211,40 @@ const featuredCategories = [
 
   return (
     <div className="container">
-      <SEO/>
+            <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://celebwordle.me"
+                }
+              ]
+            }),
+          }}
+        />
+      </Head>
+      <SEO
+        title="Celeb Wordle - Guess the Celebrity"
+        description="Try to guess the mystery celebrity in this fun and challenging game inspired by Wordle."
+        keywords="celebrity, wordle, game, guess, fun"
+        image="https://example.com/path-to-image.jpg"
+        url="https://celebwordle.me"
+        type="website"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "url": "https://www.ufcwordle.com",
+          "name": "UFC Wordle",
+          "description": "Dive into the exciting world of UFC with UFC Wordle, the ultimate guessing game for MMA enthusiasts.",
+          "image": "https://www.ufcwordle.com/wordle.png"
+        }}/>
 
       <main className="main">
         <h1 className="title">Celeb Wordle</h1>

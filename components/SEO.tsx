@@ -3,6 +3,7 @@ import Head from 'next/head';
 type SEOProps = {
   title?: string;
   description?: string;
+  keywords?: string
   url?: string;
   image?: string;
   type?: 'website' | 'article';
