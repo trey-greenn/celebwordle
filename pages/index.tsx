@@ -6,6 +6,7 @@ import { CategorySelector } from '@/components/CategorySelector';
 import { EraExplorer } from '@/components/EraExplorer';
 import { Leaderboard } from '@/components/Leaderboard';
 import { FeaturedCategories } from '@/components/FeaturedCategories';
+import Header  from '@/components/Header';
 
 
 // Dummy data for celebrities based on celebwordle.csv
@@ -210,7 +211,7 @@ const featuredCategories = [
 
 
   return (
-    <div className="container">
+    <div className="w-full">
             <Head>
         <script
           type="application/ld+json"
@@ -246,8 +247,9 @@ const featuredCategories = [
           "image": "https://www.ufcwordle.com/wordle.png"
         }}/>
 
+        <Header/>
+
       <main className="main">
-        <h1 className="title">Celeb Wordle</h1>
         
         {showInstructions && (
           <div className="instructions">
