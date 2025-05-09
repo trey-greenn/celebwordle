@@ -1,32 +1,27 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import SEO from '@/components/SEO';
-import  {DifficultySelector}  from '@/components/DifficultySelector';
+import { DifficultySelector } from '@/components/DifficultySelector';
 import { CategorySelector } from '@/components/CategorySelector';
 import { EraExplorer } from '@/components/EraExplorer';
 import { Leaderboard } from '@/components/Leaderboard';
 import { FeaturedCategories } from '@/components/FeaturedCategories';
-import Header  from '@/components/Header';
+import Header from '@/components/Header';
 
-
-// Dummy data for celebrities based on celebwordle.csv
-const dummyCelebs = [
-  { name: "Beyoncé", profession: "Singer", age: 42, country: "USA", oscars: 0, grammys: 32 },
-  { name: "Leonardo DiCaprio", profession: "Actor", age: 49, country: "USA", oscars: 1, grammys: 0 },
-  { name: "Taylor Swift", profession: "Singer", age: 34, country: "USA", oscars: 0, grammys: 14 },
-  { name: "Tom Hanks", profession: "Actor", age: 67, country: "USA", oscars: 2, grammys: 0 },
-  { name: "Jennifer Lopez", profession: "Singer/Actor", age: 54, country: "USA", oscars: 0, grammys: 0 },
-  { name: "Brad Pitt", profession: "Actor", age: 60, country: "USA", oscars: 2, grammys: 0 },
-  { name: "Meryl Streep", profession: "Actor", age: 74, country: "USA", oscars: 3, grammys: 0 },
-  { name: "Ed Sheeran", profession: "Singer", age: 33, country: "UK", oscars: 0, grammys: 4 },
-  { name: "Rihanna", profession: "Singer", age: 36, country: "Barbados", oscars: 0, grammys: 9 },
-  { name: "Dwayne Johnson", profession: "Actor", age: 52, country: "USA", oscars: 0, grammys: 0 },
-];
+// Celebrity interface based on CSV structure
+interface Celebrity {
+  name: string;
+  profession: string;
+  age: number;
+  country: string;
+  oscars: number;
+  grammys: number;
+}
 
 // Game state interface
 interface GameState {
-  mysteryCeleb: typeof dummyCelebs[0] | null;
-  guesses: typeof dummyCelebs[0][];
+  mysteryCeleb: Celebrity | null;
+  guesses: Celebrity[];
   gameOver: boolean;
   won: boolean;
   gaveUp: boolean;
@@ -35,8 +30,9 @@ interface GameState {
 }
 
 export default function Home() {
+  const [celebrities, setCelebrities] = useState<Celebrity[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredCelebs, setFilteredCelebs] = useState<typeof dummyCelebs>([]);
+  const [filteredCelebs, setFilteredCelebs] = useState<Celebrity[]>([]);
   const [showInstructions, setShowInstructions] = useState(true);
   const [gameState, setGameState] = useState<GameState>({
     mysteryCeleb: null,
@@ -50,13 +46,48 @@ export default function Home() {
 
   // Initialize game on component mount
   useEffect(() => {
-    // Select a random celebrity as the mystery celebrity
-    const randomIndex = Math.floor(Math.random() * dummyCelebs.length);
-    setGameState(prev => ({
-      ...prev,
-      mysteryCeleb: dummyCelebs[randomIndex],
-      loading: false
-    }));
+    const fetchCelebrities = async () => {
+      try {
+        // Fetch CSV data from public directory
+        const response = await fetch('/celebwordle.csv');
+        const csvText = await response.text();
+        
+        // Parse CSV into celebrity objects
+        const lines = csvText.split('\n');
+        const headers = lines[0].split(',');
+        
+        // Map lines to celebrity objects
+        const parsedCelebs: Celebrity[] = lines.slice(1).filter(line => line.trim() !== '').map(line => {
+          const values = line.split(',');
+          return {
+            name: values[0],
+            profession: values[1],
+            age: parseInt(values[2], 10),
+            country: values[3],
+            oscars: parseInt(values[4], 10),
+            grammys: parseInt(values[5], 10)
+          };
+        });
+        
+        setCelebrities(parsedCelebs);
+        
+        // Select a random celebrity as the mystery celebrity
+        const randomIndex = Math.floor(Math.random() * parsedCelebs.length);
+        setGameState(prev => ({
+          ...prev,
+          mysteryCeleb: parsedCelebs[randomIndex],
+          loading: false
+        }));
+      } catch (error) {
+        console.error('Error loading celebrity data:', error);
+        setGameState(prev => ({
+          ...prev,
+          loading: false
+        }));
+      }
+    };
+    
+    fetchCelebrities();
     
     // Check if user has played before
     const hasPlayed = localStorage.getItem('celebWordleHasPlayed');
@@ -73,7 +104,7 @@ export default function Home() {
     setSearchTerm(term);
     
     if (term.length > 0) {
-      const filtered = dummyCelebs.filter(celeb => 
+      const filtered = celebrities.filter(celeb => 
         celeb.name.toLowerCase().includes(term.toLowerCase()) &&
         !gameState.guesses.some(guess => guess.name === celeb.name)
       );
@@ -84,7 +115,7 @@ export default function Home() {
   };
 
   // Handle celebrity selection
-  const selectCeleb = (celeb: typeof dummyCelebs[0]) => {
+  const selectCeleb = (celeb: Celebrity) => {
     setSearchTerm('');
     setFilteredCelebs([]);
     
@@ -117,9 +148,9 @@ export default function Home() {
 
   // Handle new game
   const handleNewGame = () => {
-    const randomIndex = Math.floor(Math.random() * dummyCelebs.length);
+    const randomIndex = Math.floor(Math.random() * celebrities.length);
     setGameState({
-      mysteryCeleb: dummyCelebs[randomIndex],
+      mysteryCeleb: celebrities[randomIndex],
       guesses: [],
       gameOver: false,
       won: false,
@@ -128,18 +159,19 @@ export default function Home() {
       maxGuesses: 8
     });
   };
+  
   const [selectedDifficulty, setSelectedDifficulty] = useState('a-lister');
-const [selectedCategory, setSelectedCategory] = useState('all');
-const [selectedEra, setSelectedEra] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedEra, setSelectedEra] = useState('');
 
   // Check if a property matches the mystery celebrity
-  const isMatch = (guess: typeof dummyCelebs[0], property: keyof typeof dummyCelebs[0]) => {
+  const isMatch = (guess: Celebrity, property: keyof Celebrity) => {
     if (!gameState.mysteryCeleb) return false;
     return guess[property] === gameState.mysteryCeleb[property];
   };
 
   // Get directional hint for numeric values
-  const getDirectionalHint = (guess: typeof dummyCelebs[0], property: 'age' | 'oscars' | 'grammys') => {
+  const getDirectionalHint = (guess: Celebrity, property: 'age' | 'oscars' | 'grammys') => {
     if (!gameState.mysteryCeleb) return null;
     
     if (guess[property] === gameState.mysteryCeleb[property]) {
@@ -183,32 +215,28 @@ const [selectedEra, setSelectedEra] = useState('');
     return <div className="container">Loading...</div>;
   }
 
-// New state for the added components
+  // Mock data for leaderboard
+  const mockTopPlayers = [
+    { username: 'WordleWizard', score: 15 },
+    { username: 'CelebFan22', score: 12 },
+    { username: 'StarGazer', score: 10 },
+  ];
 
+  const mockUserStats = {
+    gamesPlayed: 27,
+    gamesWon: 21,
+    currentStreak: 5,
+    bestStreak: 8,
+  };
 
-// Mock data for leaderboard
-const mockTopPlayers = [
-  { username: 'WordleWizard', score: 15 },
-  { username: 'CelebFan22', score: 12 },
-  { username: 'StarGazer', score: 10 },
-];
-
-const mockUserStats = {
-  gamesPlayed: 27,
-  gamesWon: 21,
-  currentStreak: 5,
-  bestStreak: 8,
-};
-
-// Mock data for featured categories
-const featuredCategories = [
-  { id: '90s-tv', name: '90s TV Stars' },
-  { id: 'action-heroes', name: 'Action Heroes' },
-  { id: 'pop-icons', name: 'Pop Icons' },
-  { id: 'sports-legends', name: 'Sports Legends' },
-  { id: 'golden-age', name: 'Hollywood Golden Age' },
-];
-
+  // Mock data for featured categories
+  const featuredCategories = [
+    { id: '90s-tv', name: '90s TV Stars' },
+    { id: 'action-heroes', name: 'Action Heroes' },
+    { id: 'pop-icons', name: 'Pop Icons' },
+    { id: 'sports-legends', name: 'Sports Legends' },
+    { id: 'golden-age', name: 'Hollywood Golden Age' },
+  ];
 
   return (
     <div className="w-full">
@@ -265,9 +293,9 @@ const featuredCategories = [
           </div>
         )}
         <DifficultySelector onSelectDifficulty={setSelectedDifficulty} />
-        <CategorySelector onSelectCategory={setSelectedCategory} />
+        {/* <CategorySelector onSelectCategory={setSelectedCategory} />
         <EraExplorer onSelectEra={setSelectedEra} />
-        
+         */}
         {!gameState.gameOver ? (
           <>
             <div className="gameControls">
