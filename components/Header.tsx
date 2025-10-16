@@ -56,7 +56,7 @@ const Header = () => {
                           <span className="w-8 h-8 flex items-center justify-center mr-3 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 text-white text-xs font-bold">
                             {site.replace('wordle.com', '').charAt(0).toUpperCase()}
                           </span>
-                          <span className="font-medium">{site.replace('wordle.com', '')}</span>
+                          <span className="font-medium">{site.replace('wordle.com', '').toUpperCase()}</span>
                         </a>
                       ))}
                     </div>
