@@ -199,7 +199,7 @@ export default function Home() {
       const ageMatch = isMatch(guess, 'age') ? '🟩' : '⬜';
       const countryMatch = isMatch(guess, 'country') ? '🟩' : '⬜';
       const oscarsMatch = isMatch(guess, 'oscars') ? '🟩' : '⬜';
-      const grammysMatch = isMatch(guess, 'grammys') ? '🟩' : '⬜';
+      const grammysMatch = isMatch(guess, 'grammys') ? '🟩' : '🔴';
       
       shareText += `${professionMatch}${ageMatch}${countryMatch}${oscarsMatch}${grammysMatch}\n`;
     });
@@ -252,7 +252,7 @@ export default function Home() {
                   "@type": "ListItem",
                   "position": 1,
                   "name": "Home",
-                  "item": "https://celebwordle.me"
+                  "item": "//https://www.celebritywordle.com/"
                 }
               ]
             }),
@@ -263,16 +263,16 @@ export default function Home() {
         title="Celeb Wordle - Guess the Celebrity"
         description="Try to guess the mystery celebrity in this fun and challenging game inspired by Wordle."
         keywords="celebrity, wordle, game, guess, fun"
-        image="https://example.com/path-to-image.jpg"
+        image="https://celebritywordle.com/og-image.jpg"
         url="https://celebwordle.me"
         type="website"
         structuredData={{
           "@context": "https://schema.org",
           "@type": "WebSite",
-          "url": "https://www.ufcwordle.com",
-          "name": "UFC Wordle",
-          "description": "Dive into the exciting world of UFC with UFC Wordle, the ultimate guessing game for MMA enthusiasts.",
-          "image": "https://www.ufcwordle.com/wordle.png"
+          "url": "https://www.celebritywordle.com/",
+          "name": "Celebrity Wordle",
+          "description" : 'Engage in Celebrity Wordle, the exciting guessing game where you challenge your knowledge of famous celebrities. Guess the mystery celebrity in a limited number of tries and discover fun facts about your favorite stars. Perfect for fans of pop culture and entertainment, this game offers a thrilling way to test your celebrity knowledge.',
+          "image": "apple-touch-icon.png"
         }}/>
 
         <Header/>

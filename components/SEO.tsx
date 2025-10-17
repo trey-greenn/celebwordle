@@ -12,8 +12,8 @@ type SEOProps = {
 
 const SEO = ({
   title = 'Celeb Wordle - Guess the Mystery Celebrity',
-  description = 'Engage in Celeb Wordle, the exciting guessing game where you challenge your knowledge of famous celebrities. Guess the mystery celebrity in a limited number of tries and discover fun facts about your favorite stars. Perfect for fans of pop culture and entertainment, this game offers a thrilling way to test your celebrity knowledge.',
-  url = 'www.celebritybwordle.com',
+  description = 'Engage in Celebrity Wordle, the exciting guessing game where you challenge your knowledge of famous celebrities. Guess the mystery celebrity in a limited number of tries and discover fun facts about your favorite stars. Perfect for fans of pop culture and entertainment, this game offers a thrilling way to test your celebrity knowledge.',
+  url = 'https://www.celebritywordle.com/',
   image = '/wordle.png',
   type = 'website',
   structuredData = null,
